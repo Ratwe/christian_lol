@@ -19,6 +19,6 @@ class MatchInfo:
 match = Table(
     "match",
     metadata,
-    Column("id", Integer, primary_key=True, nullable=False),
+    Column("match_id", String, primary_key=True, nullable=False),
     Column("game_duration", Integer, nullable=False),
 )

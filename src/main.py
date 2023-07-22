@@ -72,5 +72,5 @@ def get_user_matches_by_name(user_name: str, region: str = 'ru', limit: int = 5)
 # Информация о матче по id
 @app.get("/matches/{match_id}")
 def get_match_info_by_id(match_id: str, region: str = 'ru'):
-    match_data = get_match_info(match_id, region)
+    match_data = get_match_by_id(match_id, region)
     return match_data

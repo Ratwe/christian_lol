@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
+from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database import get_async_session
+from src.lol.lol import get_match_by_id, collect_match_info
 from src.lol.models import match
+from src.lol.schemas import OperationCreate
 
 MINUTE = 60
 
@@ -19,7 +21,24 @@ async def get_specific_match(session: AsyncSession = Depends(get_async_session))
     result = await session.execute(query)
     return result.all()
 
-@router.get("/")
-async def add_specific_match(match_id: int, session: AsyncSession = Depends(get_async_session)):
-    
+
+@router.post("/")
+async def add_specific_match(new_match: OperationCreate, session: AsyncSession = Depends(get_async_session)):
+    data = get_match_by_id(**new_match.dict())
+
+    metadata = data["metadata"]
+    match_id = metadata["matchId"]
+    info = data["info"]
+    game_duration = info["gameDuration"]
+
+    stmt = insert(match).values(match_id=match_id, game_duration=game_duration)
+    await session.execute(stmt)
+    await session.commit()
+
     return {"status": "success"}
+
+
+@router.post("/calc")
+async def calculate_match_res(new_match: OperationCreate):
+    data = collect_match_info(**new_match.dict())
+

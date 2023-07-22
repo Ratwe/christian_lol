@@ -1,9 +1,9 @@
 from riotwatcher import LolWatcher, ApiError
 
-from src.auth.utils import get_user_db
+from src.config import RIOT_API
+from src.lol.calculating import calculate_participants_res
 
-talon_id = 91
-api_key = 'RGAPI-0f4602e9-ca51-40ba-a8cd-99352e98cfa8'
+api_key = RIOT_API
 watcher = LolWatcher(api_key)
 
 
@@ -22,9 +22,39 @@ def get_summoner_matches(summoner_puuid: str, region: str, limit: int):
     return data
 
 
-def get_match_info(match_id: str, region: str):
+def get_match_by_id(match_id: str, region: str):
     data = watcher.match.by_id(region, match_id)
     return data
 
-def load_match_info(match_data):
-    user_db = get_user_db()
+
+def collect_participant_data(participant):
+    summoner_name = participant["summonerName"]
+    champion_name = participant["championName"]
+    kills = participant["kills"]
+    deaths = participant["deaths"]
+    assists = participant["assists"]
+
+    participant_data = {"summoner_name": summoner_name,
+                        "champion_name": champion_name,
+                        "kills": kills,
+                        "deaths": deaths,
+                        "assists": assists}
+
+    return participant_data
+
+
+
+
+def collect_match_info(match_id: str, region: str):
+    data = get_match_by_id(match_id, region)
+    metadata = data["metadata"]
+    info = data["info"]
+
+    participants = info["participants"]  # List[ParticipantDto]
+    gameMode = info["gameMode"]
+
+    participants_data = []
+    for participant in participants:
+        participants_data.append(collect_participant_data(participant))
+
+    return calculate_participants_res(participants_data)
