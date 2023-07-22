@@ -1,0 +1,6 @@
+- FastAPI
+- Pydant
+- sqlalchemy
+- postgreSQL
+- asyncpg
+- alembic
