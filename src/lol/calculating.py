@@ -38,12 +38,12 @@ def calculate_participants_res(participants):
     participants_res = {}
 
     participant_min_kills = get_min_kills(participants)
-    participants_res[str(participant_min_kills["summoner_name"]): "он вообще не убивал"]
+    participants_res["min_kills"] = participant_min_kills["summoner_name"]
 
     participant_max_deaths = get_max_deaths(participants)
-    participants_res[str(participant_max_deaths["summoner_name"]): "дох как муха"]
+    participants_res["max_deaths"] = participant_max_deaths["summoner_name"]
 
     participant_min_assists = get_min_assists(participants)
-    participants_res[str(participant_min_assists["summoner_name"]): "стилер килов"]
+    participants_res["min_assists"] = participant_min_assists["summoner_name"]
 
     return participants_res
