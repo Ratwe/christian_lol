@@ -15,6 +15,9 @@ match_res = Table(
     "match_res",
     metadata,
     Column("min_kills", String),
+    Column("max_kills", String),
+    Column("min_deaths", String),
     Column("max_deaths", String),
-    Column("min_assists", String)
+    Column("min_assists", String),
+    Column("max_assists", String),
 )

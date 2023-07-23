@@ -42,7 +42,12 @@ async def add_specific_match(new_match: OperationCreate, session: AsyncSession =
 async def calculate_match_res(new_match: OperationCreate, session: AsyncSession = Depends(get_async_session)):
     data = collect_match_info(**new_match.dict())
 
-    stmt = insert(match_res).values(min_kills=data["min_kills"], max_deaths=data["max_deaths"], min_assists=data["min_assists"])
+    stmt = insert(match_res).values(min_kills=data["min_kills"],
+                                    max_kills=data["max_kills"],
+                                    min_deaths=data["min_deaths"],
+                                    max_deaths=data["max_deaths"],
+                                    min_assists=data["min_assists"],
+                                    max_assists=data["max_assists"])
     await session.execute(stmt)
     await session.commit()
 

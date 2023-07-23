@@ -28,17 +28,12 @@ def get_match_by_id(match_id: str, region: str):
 
 
 def collect_participant_data(participant):
-    summoner_name = participant["summonerName"]
-    champion_name = participant["championName"]
-    kills = participant["kills"]
-    deaths = participant["deaths"]
-    assists = participant["assists"]
+    keys = ["summonerName", "championName", "kills", "deaths", "assists"]
 
-    participant_data = {"summoner_name": summoner_name,
-                        "champion_name": champion_name,
-                        "kills": kills,
-                        "deaths": deaths,
-                        "assists": assists}
+    participant_data = {}
+
+    for key in keys:
+        participant_data[key] = participant[key]
 
     return participant_data
 

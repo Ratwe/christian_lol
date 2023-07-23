@@ -1,49 +1,53 @@
-def get_min_kills(participants):
-    min_kills = participants[0]["kills"]
-    participant_min_kills = participants[0]
+def get_kills(participants, mode: str = "max"):
+    if mode != "min":
+        mode = "max"
+
+    kills = participants[0]["kills"]
+    participant_kills = participants[0]
 
     for participant in participants:
-        if participant["kills"] < min_kills:
-            min_kills = participant["kills"]
-            participant_min_kills = participant
+        if mode == "min":
+            if participant["kills"] < kills:
+                kills = participant["kills"]
+                participant_kills = participant
+        else:
+            if participant["kills"] > kills:
+                kills = participant["kills"]
+                participant_kills = participant
 
-    return participant_min_kills
-
-
-def get_max_deaths(participants):
-    max_deaths = participants[0]["deaths"]
-    participant_max_deaths = participants[0]
-
-    for participant in participants:
-        if participant["deaths"] > max_deaths:
-            max_deaths = participant["deaths"]
-            participant_max_deaths = participant
-
-    return participant_max_deaths
+    return participant_kills
 
 
-def get_min_assists(participants):
-    min_assists = participants[0]["assists"]
-    participant_min_assists = participants[0]
+# достать min/max данные из ParticipantDto по ключу key
+def get_participant_info_by_key(participants, key: str, mode: str = "max"):
+    if mode != "min":
+        mode = "max"
+
+    res_value = participants[0][key]
+    res_participant = participants[0]
 
     for participant in participants:
-        if participant["assists"] < min_assists:
-            min_assists = participant["assists"]
-            participant_min_assists = participant
+        if mode == "min":
+            if participant[key] < res_value:
+                res_value = participant[key]
+                res_participant = participant
+        else:
+            if participant[key] > res_value:
+                res_value = participant[key]
+                res_participant = participant
 
-    return participant_min_assists
+    return res_participant
+
 
 
 def calculate_participants_res(participants):
     participants_res = {}
 
-    participant_min_kills = get_min_kills(participants)
-    participants_res["min_kills"] = participant_min_kills["summoner_name"]
+    keys = ["kills", "deaths", "assists"]
+    modes = ["min", "max"]
 
-    participant_max_deaths = get_max_deaths(participants)
-    participants_res["max_deaths"] = participant_max_deaths["summoner_name"]
-
-    participant_min_assists = get_min_assists(participants)
-    participants_res["min_assists"] = participant_min_assists["summoner_name"]
+    for key in keys:
+        for mode in modes:
+            participants_res[f"{mode}_{key}"] = get_participant_info_by_key(participants, key=key, mode=mode)["summonerName"]
 
     return participants_res
