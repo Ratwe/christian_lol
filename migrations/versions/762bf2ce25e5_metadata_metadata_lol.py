@@ -1,4 +1,4 @@
-"""metadata = metadata_lol
+"""metadata = metadata
 
 Revision ID: 762bf2ce25e5
 Revises: 9bf07c863ee6

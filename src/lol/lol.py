@@ -23,6 +23,7 @@ def get_summoner_matches(summoner_puuid: str, region: str, limit: int):
 
 
 def get_match_by_id(match_id: str, region: str):
+    print(f"get_match: {match_id}, {region}")
     data = watcher.match.by_id(region, match_id)
     return data
 
@@ -44,7 +45,7 @@ def collect_match_info(match_id: str, region: str):
     data = get_match_by_id(match_id, region)
     info = data["info"]
 
-    participants = info["participants"]  # List[ParticipantDto]
+    participants = info["participants"]
     gameMode = info["gameMode"]
 
     if gameMode != "CLASSIC":

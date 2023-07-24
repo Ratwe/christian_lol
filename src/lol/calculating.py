@@ -1,23 +1,3 @@
-def get_kills(participants, mode: str = "max"):
-    if mode != "min":
-        mode = "max"
-
-    kills = participants[0]["kills"]
-    participant_kills = participants[0]
-
-    for participant in participants:
-        if mode == "min":
-            if participant["kills"] < kills:
-                kills = participant["kills"]
-                participant_kills = participant
-        else:
-            if participant["kills"] > kills:
-                kills = participant["kills"]
-                participant_kills = participant
-
-    return participant_kills
-
-
 # достать min/max данные из ParticipantDto по ключу key
 def get_participant_info_by_key(participants, key: str, mode: str = "max"):
     if mode != "min":

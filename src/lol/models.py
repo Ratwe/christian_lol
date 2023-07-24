@@ -1,8 +1,6 @@
-from typing import List
+from sqlalchemy import Table, Column, Integer, String
 
-from sqlalchemy import MetaData, Table, Column, Integer, String
-
-metadata = MetaData()
+from src.database import metadata
 
 match = Table(
     "match",

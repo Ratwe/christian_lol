@@ -1,4 +1,4 @@
-"""metadata = [metadata_auth, metadata_lol]
+"""metadata = metadata
 
 Revision ID: 9d5dea2a9ff3
 Revises: 762bf2ce25e5
