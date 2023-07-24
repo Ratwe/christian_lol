@@ -42,11 +42,13 @@ def collect_participant_data(participant):
 
 def collect_match_info(match_id: str, region: str):
     data = get_match_by_id(match_id, region)
-    metadata = data["metadata"]
     info = data["info"]
 
     participants = info["participants"]  # List[ParticipantDto]
     gameMode = info["gameMode"]
+
+    if gameMode != "CLASSIC":
+        raise Exception("gameMode must be CLASSIC.")
 
     participants_data = []
     for participant in participants:
