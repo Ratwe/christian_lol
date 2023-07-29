@@ -1,7 +1,10 @@
+import asyncio
 from typing import AsyncGenerator
 
 import pytest
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from starlette.testclient import TestClient
 
 from src.config import DB_USER_TEST, DB_PASS_TEST, DB_HOST_TEST, DB_PORT_TEST, DB_NAME_TEST
 from src.database import metadata, get_async_session
@@ -29,3 +32,19 @@ async def prepare_database():
     yield
     async with engine_test.begin() as conn:
         await conn.run_sync(metadata.drop_all())
+
+
+@pytest.fixture(scope='session')
+def event_loop(request):
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+
+client = TestClient(app)
+
+
+@pytest.fixture(scope='session')
+async def ac() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
