@@ -61,10 +61,10 @@ async def get_specific_match(session: AsyncSession = Depends(get_async_session))
     }
 
 
-@router.post("/{match_id}/add")
+@router.post("/add/{match_id}")
 async def add_specific_match(match_id: str, region: str = 'ru', session: AsyncSession = Depends(get_async_session)):
     new_match = OperationCreate(match_id=match_id, region=region)
-    data = get_match_by_id(**new_match.dict())
+    data = get_match_by_id(**new_match.model_dump())
 
     metadata = data["metadata"]
     match_id = metadata["matchId"]
@@ -82,11 +82,11 @@ async def add_specific_match(match_id: str, region: str = 'ru', session: AsyncSe
     }
 
 
-@router.post("/{match_id}/res")
+@router.post("/res/{match_id}")
 async def calculate_match_res(match_id: str, region: str = 'ru', session: AsyncSession = Depends(get_async_session)):
     try:
         new_match = OperationCreate(match_id=match_id, region=region)
-        data = collect_match_info(**new_match.dict())
+        data = collect_match_info(**new_match.model_dump())
 
         stmt = insert(match_res).values(min_kills=data["min_kills"],
                                         max_kills=data["max_kills"],

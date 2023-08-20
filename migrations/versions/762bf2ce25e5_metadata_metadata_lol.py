@@ -35,7 +35,7 @@ def downgrade() -> None:
     sa.Column('is_active', sa.BOOLEAN(), autoincrement=False, nullable=False),
     sa.Column('is_superuser', sa.BOOLEAN(), autoincrement=False, nullable=False),
     sa.Column('is_verified', sa.BOOLEAN(), autoincrement=False, nullable=False),
-    sa.ForeignKeyConstraint(['role_id'], ['role.id'], name='user_role_id_fkey'),
+    sa.ForeignKeyConstraint(['role_id'], ['role.id'], name='user_role_id_key'),
     sa.PrimaryKeyConstraint('id', name='user_pkey')
     )
     op.create_table('role',
